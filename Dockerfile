@@ -1,10 +1,13 @@
-FROM debian
+FROM debian:latest
 
-ENV HUGO_VERSION 0.20.2
-ADD https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}-64bit.deb /tmp/hugo.deb
-RUN dpkg -i /tmp/hugo.deb \
-    && rm /tmp/hugo.deb
+ENV HUGO_VERSION 0.40.1
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends curl ca-certificates procps \
+  && curl -L https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz -o /tmp/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz \
+  && cd /tmp \
+  && tar xvzf /tmp/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz \
+  && mv /tmp/hugo /usr/local/bin \
+  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /tmp/*
 
 WORKDIR /app
-
-EXPOSE 1313
