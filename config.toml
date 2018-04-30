@@ -1,13 +1,22 @@
 baseURL = "https://blog.threetreeslight.com/"
 languageCode = "ja-JP"
-title = "threetreeslight"
+title = "iii threetreeslight"
+
 # https://themes.gohugo.io/hemingway2/
 theme = "hemingway2"
 
 description = "This is threetreeslight."
-keywords = ["startup,programmer,engineering"]
+keywords = ["startup,programming"]
+
+
+[taxonomies]
+tag = "tags"
+category = "categories"
 
 [params]
+
+[params.highlight]
+style = "github"
 
 [[params.social]]
 url = "https://github.com/threetreeslight"
@@ -24,3 +33,6 @@ fa_icon = "fa-linkedin-square"
 [[params.social]]
 url = "/index.xml"
 fa_icon = "fa-rss"
+
+[permalinks]
+  posts = "posts/:year/:month/:day/:title"
