@@ -45,9 +45,9 @@ host側の変更が `attrib` にしかならないのなぜ？
 
 rb-fseventでfileのeventとtimeを送るようにしている。
 
-```rb
-# https://github.com/codekitchen/fsevents_to_vm/blob/master/lib/fsevents_to_vm/watch.rb
+https://github.com/codekitchen/fsevents_to_vm/blob/master/lib/fsevents_to_vm/watch.rb
 
+```rb
     def run
       @fs.watch(@listen_dirs, file_events: true) do |files|
         files.each do |file|
@@ -75,9 +75,9 @@ rb-fseventでfileのeventとtimeを送るようにしている。
 
 取得されたイベントはtouch commandを用いてfileの編集時刻を更新する。これによってcontainer内でeventを発火させている。
 
-```rb
-# https://github.com/codekitchen/fsevents_to_vm/blob/master/lib/fsevents_to_vm/ssh_emit.rb
+https://github.com/codekitchen/fsevents_to_vm/blob/master/lib/fsevents_to_vm/ssh_emit.rb
 
+```rb
     def event(event)
       ssh.exec!("touch -m -c -t #{event.mtime} #{Shellwords.escape event.path}".force_encoding(Encoding::BINARY))
     rescue IOError, SystemCallError, Net::SSH::Exception => e
@@ -94,10 +94,10 @@ rb-fseventでfileのeventとtimeを送るようにしている。
 hugoでは [fsnotify](https://github.com/fsnotify/fsnotify) を利用してfileのeventを取得している。
 そのため、fsnotify側のattribの取扱いを追う。
 
-```go
-# https://github.com/fsnotify/fsnotify/blob/master/inotify.go
+https://github.com/fsnotify/fsnotify/blob/master/inotify.go
 
-# `Chmod` Operatorとしている。
+```go
+    // `Chmod` Operatorとしている。
     if mask&unix.IN_ATTRIB == unix.IN_ATTRIB {
         e.Op |= Chmod
     }
@@ -107,9 +107,9 @@ hugoでは [fsnotify](https://github.com/fsnotify/fsnotify) を利用してfile�
 そして、hugo serverは `Chmod` eventが発生した時、 `fullRebuild` をしないような処理となっている。
 
 
-```
-# https://github.com/gohugoio/hugo/blob/master/commands/hugo.go
+https://github.com/gohugoio/hugo/blob/master/commands/hugo.go
 
+```go
 					// Write and rename operations are often followed by CHMOD.
 					// There may be valid use cases for rebuilding the site on CHMOD,
 					// but that will require more complex logic than this simple conditional.

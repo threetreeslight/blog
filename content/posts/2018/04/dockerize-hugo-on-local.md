@@ -18,7 +18,7 @@ blogをtumblerから[hugo](https://github.com/gohugoio/hugo) に移す。
 
 ここらへんはbaseURLとbindを指定することで解決。
 
-```
+```yaml
 # docker-compose.yml
 
 version: "3"
