@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.9
+    environment:
+      HUGO_VERSION: 0.40.1
+    steps:
+      - checkout
+      - run: echo $HUGO_VERSION > ~/HUGO_VERSION
+      - restore_cache:
+          key: hugo-{{ checksum "~/HUGO_VERSION" }}
+      - run:
+          name: Install hugo
+          command: |
+              if [ ! -e ~/hugo ]; then
+                mkdir ~/hugo
+                cd ~/hugo
+                curl -L https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz -o ./hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
+                tar xvzf ./hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
+              else
+                echo "already hugo exists"
+              fi
+      - save_cache:
+          key: hugo-{{ checksum "~/HUGO_VERSION" }}
+          paths:
+            - ~/hugo
+      - run:
+          name: build hugo
+          command: ~/hugo/hugo
