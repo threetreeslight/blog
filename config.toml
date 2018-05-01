@@ -8,6 +8,8 @@ theme = "hemingway2"
 description = "This is threetreeslight."
 keywords = ["startup,programming"]
 
+pygmentsUseClasses = true
+pygmentsCodeFences = true
 
 [taxonomies]
 tag = "tags"
