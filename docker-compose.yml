@@ -1,10 +1,10 @@
 version: "3"
 services:
-  blog:
+  site:
     build:
       context: .
     volumes:
-      - .:/app
+      - .:/site
     ports:
       - "1313:1313"
     command: ["hugo", "server", "--baseURL=http://${DOCKER_HOST_IP}:1313", "--bind=0.0.0.0"]
