@@ -11,6 +11,8 @@ keywords = ["startup,programming"]
 pygmentsUseClasses = true
 pygmentsCodeFences = true
 
+enableEmoji = true
+
 [taxonomies]
 tag = "tags"
 category = "categories"
