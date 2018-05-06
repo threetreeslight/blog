@@ -11,3 +11,12 @@ $ docker-compose build
 $ docker-compose up blog
 ```
 
+
+## Deploy
+
+```
+hugo
+gsutil rsync -r ./public gs://blog.threetreeslight.com
+gsutil acl ch -r -u AllUsers:R gs://blog.threetreeslight.com/
+```
+
