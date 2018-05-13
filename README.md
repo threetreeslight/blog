@@ -16,7 +16,7 @@ $ docker-compose up blog
 
 ```
 hugo
-gsutil rsync -r ./public gs://blog.threetreeslight.com
-gsutil acl ch -r -u AllUsers:R gs://blog.threetreeslight.com/
+gsutil -m rsync -r ./public gs://blog.threetreeslight.com
+gsutil -m acl ch -r -u AllUsers:R gs://blog.threetreeslight.com/
 ```
 
