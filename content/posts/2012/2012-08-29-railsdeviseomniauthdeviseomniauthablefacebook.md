@@ -1,0 +1,82 @@
++++
+date = "2012-08-29T05:58:00+00:00"
+draft = false
+tags = ["rails", "omniatuth", "oauth", "Twitter", "facebook"]
+title = "[rails][devise][omniauth]devise(omniauthable)を利用してfacebook認証してみた"
++++
+<p><strong>過去</strong><br />devise + twitter + facebook認証は、deviseとは別に独自テーブルを用いて認証を行っていた。</p>&#13;
+<p><strong>今回</strong><br />devise使えばtrackableとかverifyableとか使える訳だし、今回はdeviseのomniauthableを利用した認証を行いたいと思う（ほぼ本家をコピペ＆まとめただけだけど）</p>&#13;
+<p><strong><br /></strong></p>&#13;
+<p><strong>require</strong></p>&#13;
+<p>ruby 1.9.3<br />rails 3.2.6<br />devise 2.1.2<br />omniauth-facebook 1.4.1</p>&#13;
+<p><strong>make db</strong></p>&#13;
+<pre class="bash">$ rails g devise:install&#13;
+$ rails g devise User&#13;
+$ rails g migration AddColumnsToUsers provider:string uid:string&#13;
+$ rake db:migrate&#13;
+$ rails g controller OmniauthCallbacksController&#13;
+</pre>&#13;
+<p><strong>model/user.rb</strong></p>&#13;
+<pre class="ruby">attr_accessible :provider, :uid&#13;
+&#13;
+def self.find_for_facebook_oauth(auth, signed_in_resource=nil)&#13;
+  user = User.where(:provider =&gt; auth.provider, :uid =&gt; auth.uid).first&#13;
+  unless user&#13;
+    user = User.create(name:auth.extra.raw_info.name,&#13;
+                         provider:auth.provider,&#13;
+                         uid:auth.uid,&#13;
+                         email:auth.info.email,&#13;
+                         password:Devise.friendly_token[0,20]&#13;
+                         )&#13;
+  end&#13;
+  user&#13;
+end&#13;
+&#13;
+def self.new_with_session(params, session)&#13;
+  super.tap do |user|&#13;
+    if data = session["devise.facebook_data"] &amp;&amp; session["devise.facebook_data"]["extra"]["raw_info"]&#13;
+      user.email = data["email"] if user.email.blank?&#13;
+    end&#13;
+  end&#13;
+end&#13;
+&#13;
+</pre>&#13;
+<p><strong>config/route.rb</strong></p>&#13;
+<pre class="ruby">devise_for :users, :controllers =&gt; { :omniauth_callbacks =&gt; "users/omniauth_callbacks" }&#13;
+&#13;
+devise_scope :user do&#13;
+  get 'sign_in', :to =&gt; 'users/sessions#new', :as =&gt; :new_user_session&#13;
+  get 'sign_out', :to =&gt; 'users/sessions#destroy', :as =&gt; :destroy_user_session&#13;
+end&#13;
+</pre>&#13;
+<p><strong>controller/OmniauthCallbacksController.rb</strong></p>&#13;
+<pre class="ruby">class Users::OmniauthCallbacksController &lt; Devise::OmniauthCallbacksController&#13;
+  def facebook&#13;
+    # You need to implement the method below in your model (e.g. app/models/user.rb)&#13;
+    @user = User.find_for_facebook_oauth(request.env["omniauth.auth"], current_user)&#13;
+&#13;
+    if @user.persisted?&#13;
+      flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind =&gt; "Facebook"&#13;
+      sign_in_and_redirect @user, :event =&gt; :authentication&#13;
+    else&#13;
+      session["devise.facebook_data"] = request.env["omniauth.auth"]&#13;
+      redirect_to new_user_registration_url&#13;
+    end&#13;
+  end&#13;
+end&#13;
+</pre>&#13;
+<p><strong>config/initialize/devise.rb</strong></p>&#13;
+<pre class="ruby">require "omniauth-facebook"&#13;
+config.omniauth :facebook, "APP_ID", "APP_SECRET"&#13;
+</pre>&#13;
+&#13;
+<p>詳しくは以下を読むとべし</p>&#13;
+<p><a href="https://github.com/plataformatec/devise">devise gem</a></p>&#13;
+<p><a href="https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview">OmniAuth:-Overview</a></p>&#13;
+<p><a href="http://qiita.com/items/9f1faa509f4d3653a1b2">deviseでfacebook,twitter認証</a></p>&#13;
+&#13;
+&#13;
+<p><strong>P.S.</strong></p>&#13;
+<p>config/devise.rbにfacebook app ID とseacret passを記述していたが、localやdevelopment, productionでkeyを変えたい場合がある。</p>&#13;
+<p>このときは、config/environmentの各環境設定ファイルにdevise設定（omni認証部分）を記述すると良い。</p>&#13;
+<p>initializeにlocal_setting.rbとしてENV['facebook']を切替えるよう記述したら、devise設定と読み込みが同時に成ってしまうので危険かも？（動かなかったので）</p> 
