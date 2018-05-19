@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: blog
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: blog-gke
+spec:
+  tls:
+  - secretName: threetreeslight-com
+  backend:
+    serviceName: blog
+    servicePort: 8080

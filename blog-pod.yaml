@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: blog
+  name: blog
+  namespace: default
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/blog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: blog
+    spec:
+      containers:
+      - image: threetreeslight/blog:latest
+        imagePullPolicy: Always
+        name: blog
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
