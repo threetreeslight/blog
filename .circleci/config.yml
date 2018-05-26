@@ -6,7 +6,8 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: build and push blog image
           command: |
@@ -16,3 +17,38 @@ jobs:
             docker login -u threetreeslight -p $DOCKER_PASS
             docker push $IMAGE_NAME:$CIRCLE_SHA1
             docker push $IMAGE_NAME:latest
+
+  # see also https://circleci.com/docs/2.0/google-container-engine/
+  deploy:
+    docker:
+      - image: google/cloud-sdk:latest
+    environment:
+      GOOGLE_PROJECT_ID: "threetreeslight"
+      GOOGLE_COMPUTE_ZONE: "us-west1-a"
+      GOOGLE_CLUSTER_NAME: "blog-cluster"
+    steps:
+      - run:
+          name: Store Service Account
+          command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+      - run:
+          name: Setup gcloud
+          command: |
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
+
+            # modify blog image tag to rolling update
+            kubectl set image deployment blog blog=threetreeslight/blog:$CIRCLE_SHA1
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
