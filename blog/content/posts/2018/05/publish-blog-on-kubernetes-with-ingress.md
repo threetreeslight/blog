@@ -1,7 +1,7 @@
 +++
 date = "2018-05-19T18:00:00+09:00"
-title = "publish blog on k9s with ingress"
-tags = ["gcp", "kubanetis", "k9s", "container", "ingress", "https"]
+title = "publish blog on kubernetes with ingress"
+tags = ["gcp", "kubanetis", "kubernetes", "container", "ingress", "https"]
 categories = ["programming"]
 +++
 
@@ -93,7 +93,7 @@ docker push threetreelsight/blog
 
 ## Prepare to use gke
 
-まずk9sを操作するためには[kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)を利用するのでそれを入れる
+まずkubernetesを操作するためには[kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)を利用するのでそれを入れる
 
 これはgcp cliを利用していれることができる
 
@@ -103,7 +103,7 @@ docker push threetreelsight/blog
 $ brew install kubectl
 ```
 
-また、実際にk9sを触ってみる[quick start](https://cloud.google.com/kubernetes-engine/docs/quickstart) があるので、これを触っておくと良い。
+また、実際にkubernetesを触ってみる[quick start](https://cloud.google.com/kubernetes-engine/docs/quickstart) があるので、これを触っておくと良い。
 
 ## create cluster, pods
 
@@ -230,7 +230,7 @@ backend service <-> cluster_ip:port <-> pods
 ```
 
 1. bakcend serviceによって特定cluster ipの特定port宛に通信がproxyされる
-1. cluster_ip, portの情報を元にk9sはどのservice(port)にproxyすればよいか決定される
+1. cluster_ip, portの情報を元にkubernetesはどのservice(port)にproxyすればよいか決定される
 1. proxyされた通信はserviceとdyanmic port mappingされたpodsにproxyされる
   1. replicaが2以上のときはどんなルールでproxyされるかはdeploymentに記述できる（と思う）
 
@@ -307,22 +307,3 @@ blog      *         35.201.67.24   80, 443   10h
 ```
 
 80, 443 portが公開され、addressも作成たexternal ipが設定されていることがわかります。
-
-
-
-
-## のこり
-
-- log driverはdefaultでstackdriverかな？
-  - podsにfluentdかましてpub/subに送る感じにして、そこからbigqueryにデータを飛ばすように仕様
-  - 普通に考えたらstackdriver -> bigqueryとかでいけそうだけど
-- nginxとblog fileを持つstatic file containerを分離して
-  - 1 hostに1 blog file containerしか動かないようにcontaienrの配置戦略を調整
-  - nginx containerはstatic file contaienrをmountするように配置するとvolume sizeを削減できる
-  - やる意味いっさいないけど
-
-
-
-
-
-https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
