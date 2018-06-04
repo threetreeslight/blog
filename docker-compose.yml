@@ -14,3 +14,75 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8888:8080"
+
+  grafana:
+    build:
+      context: ./grafana
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: Dockerfile-prometheus
+    volumes:
+      - prometheus-data:/prometheus
+    depends_on:
+      - random-9000
+      - random-9001
+      - random-9002
+      - cadvisor
+      - node-exporter
+      - console
+    networks:
+      - default
+    ports:
+      - "9090:9090"
+
+  console:
+    build:
+      context: .
+      dockerfile: Dockerfile-console
+    networks:
+      - default
+
+  random: &random
+    build:
+      context: ./client_golang
+      dockerfile: examples/random/Dockerfile
+    networks:
+      - default
+
+  cadvisor:
+    image: google/cadvisor:latest
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - console
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter
+    networks:
+      - default
+    pid: "host"
+    ports:
+      - "9100:9100"
+
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-storage:
+    driver: local

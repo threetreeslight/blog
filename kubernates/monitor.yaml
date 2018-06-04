@@ -1,0 +1,170 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: monitor
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - nodes/proxy
+  - services
+  - endpoints
+  - pods
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - extensions
+  resources:
+  - ingresses
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: monitor
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: monitor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: monitor
+subjects:
+- kind: ServiceAccount
+  name: monitor
+  namespace: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: monitor
+  name: monitor
+  namespace: default
+spec:
+  ports:
+  - port: 9090
+    protocol: TCP
+    name: prometheus
+    targetPort: 9090
+  - port: 3000
+    protocol: TCP
+    name: grafana
+    targetPort: 3000
+  selector:
+    app: monitor
+  type: NodePort
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-data
+  labels:
+    app: monitor
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-data
+  labels:
+    app: monitor
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: monitor
+  name: monitor
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitor
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: monitor
+    spec:
+      serviceAccountName: monitor
+      containers:
+      - image: threetreeslight/blog-prometheus:latest
+        imagePullPolicy: Always
+        name: prometheus
+        readinessProbe:
+          httpGet:
+            path: /graph
+            port: 9090
+          periodSeconds: 10
+          initialDelaySeconds: 0
+          failureThreshold: 10
+          successThreshold: 1
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /prometheus
+          name: prometheus-data
+        securityContext:
+          runAsUser: 0
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      - image: threetreeslight/blog-grafana
+        imagePullPolicy: Always
+        name: grafana
+        readinessProbe:
+          httpGet:
+            path: /login
+            port: 3000
+          periodSeconds: 10
+          initialDelaySeconds: 0
+          failureThreshold: 10
+          successThreshold: 1
+        env:
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gf-security-admin-password
+              key: password
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name: grafana-data
+        securityContext:
+          runAsUser: 0
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: prometheus-data
+        persistentVolumeClaim:
+          claimName: prometheus-data
+      - name: grafana-data
+        persistentVolumeClaim:
+          claimName: grafana-data
