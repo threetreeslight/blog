@@ -10,6 +10,7 @@ rules:
   - services
   - endpoints
   - pods
+  - configmaps
   verbs: ["get", "list", "watch"]
 - apiGroups:
   - extensions
@@ -106,7 +107,22 @@ spec:
     spec:
       serviceAccountName: monitor
       containers:
-      - image: threetreeslight/blog-prometheus:latest
+      - image: prom/blackbox-exporter:latest
+        imagePullPolicy: Always
+        name: blackbox-exporter
+        resources: {}
+      - image: prom/alertmanager:latest
+        imagePullPolicy: Always
+        name: alertmanager
+        ports:
+        - containerPort: 9093
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/alertmanager/alertmanager.yml
+          subPath: alertmanager.yml
+          name: alertmanager-yml
+      - image: prom/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
         readinessProbe:
@@ -122,13 +138,19 @@ spec:
           protocol: TCP
         resources: {}
         volumeMounts:
+        - mountPath: /etc/prometheus/prometheus.yml
+          subPath: prometheus.yml
+          name: prometheus-yml
+        - mountPath: /etc/prometheus/alert.rules.yml
+          subPath: alert.rules.yml
+          name: alert-rules-yml
         - mountPath: /prometheus
           name: prometheus-data
         securityContext:
           runAsUser: 0
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-      - image: threetreeslight/blog-grafana
+      - image: grafana/grafana:latest
         imagePullPolicy: Always
         name: grafana
         readinessProbe:
@@ -150,6 +172,12 @@ spec:
           protocol: TCP
         resources: {}
         volumeMounts:
+        - mountPath: /etc/grafana/grafana.ini
+          subPath: grafana.ini
+          name: grafana-ini
+        - mountPath: /etc/grafana/provisioning/datasources/datasource.yaml
+          subPath: datasource.yaml
+          name: grafana-datasource
         - mountPath: /var/lib/grafana
           name: grafana-data
         securityContext:
@@ -162,9 +190,24 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
+      - name: alertmanager-yml
+        configMap:
+          name: alertmanager-yml
+      - name: prometheus-yml
+        configMap:
+          name: prometheus-yml
+      - name: alert-rules-yml
+        configMap:
+          name: alert-rules-yml
       - name: prometheus-data
         persistentVolumeClaim:
           claimName: prometheus-data
+      - name: grafana-ini
+        configMap:
+          name: grafana-ini
+      - name: grafana-datasource
+        configMap:
+          name: grafana-datasource
       - name: grafana-data
         persistentVolumeClaim:
           claimName: grafana-data

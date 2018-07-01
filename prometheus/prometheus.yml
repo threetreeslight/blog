@@ -10,6 +10,10 @@ alerting:
   alertmanagers:
   - static_configs:
     - targets:
+      - 'localhost:9093'
+
+rule_files:
+- alert.rules.yml
 
 scrape_configs:
 - job_name: 'prometheus'
@@ -104,3 +108,21 @@ scrape_configs:
   - source_labels: [__meta_kubernetes_pod_name]
     action: replace
     target_label: kubernetes_pod_name
+
+# scrape availability monitoring
+- job_name: 'blackbox'
+  metrics_path: /probe
+  scrape_interval: 1s
+  params:
+    module: [http_2xx]  # Look for a HTTP 200 response.
+  static_configs:
+    - targets:
+      - https://threetreeslight.com
+      - https://grafana.threetreeslight.com/login
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: localhost:9115

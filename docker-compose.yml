@@ -5,7 +5,7 @@ services:
     volumes:
       - ./blog:/site
     ports:
-      - "1313:1313"
+      - 1313:1313
     command: ["hugo", "server", "-D", "--baseURL=http://${DOCKER_HOST_IP}:1313", "--bind=0.0.0.0"]
 
   nginx:
@@ -13,51 +13,50 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8888:8080"
+      - 8888:8080
 
   grafana:
-    build:
-      context: ./grafana
+    image: grafana/grafana
     volumes:
+      - grafana/grafana.ini:/etc/grafana/grafana.ini
+      - grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - grafana-storage:/var/lib/grafana
     depends_on:
       - prometheus
     networks:
       - default
     ports:
-      - "3000:3000"
+      - 3000:3000
 
   prometheus:
-    build:
-      context: .
-      dockerfile: Dockerfile-prometheus
+    image: prom/prometheus
     volumes:
+      - ./prometheus/prometheus-local.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
       - prometheus-data:/prometheus
     depends_on:
-      - random-9000
-      - random-9001
-      - random-9002
+      - alertmanager
+      - blackbox-exporter
       - cadvisor
       - node-exporter
-      - console
     networks:
       - default
     ports:
-      - "9090:9090"
+      - 9090:9090
 
-  console:
-    build:
-      context: .
-      dockerfile: Dockerfile-console
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - 9093:9093
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
     networks:
       - default
-
-  random: &random
-    build:
-      context: ./client_golang
-      dockerfile: examples/random/Dockerfile
-    networks:
-      - default
+    ports:
+      - 9115:9115
 
   cadvisor:
     image: google/cadvisor:latest
@@ -71,7 +70,7 @@ services:
     networks:
       - default
     ports:
-      - "8080:8080"
+      - 8080:8080
 
   node-exporter:
     image: quay.io/prometheus/node-exporter
@@ -79,7 +78,7 @@ services:
       - default
     pid: "host"
     ports:
-      - "9100:9100"
+      - 9100:9100
 
 volumes:
   prometheus-data:
