@@ -23,6 +23,24 @@ FROM nginx:mainline-alpine
 LABEL maintainer "threetreeslight"
 LABEL Description="threetreeslight's blog image" Vendor="threetreeslight" Version="0.1"
 
+# install entrykit
+ENV ENTRYKIT_VERSION 0.4.0
+RUN apk add --no-cache --virtual build-dependencies curl tar \
+  && curl -SLo entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERSION}/entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
+  && tar xvzf entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
+  && rm entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
+  && apk del --purge build-dependencies \
+  && mv entrykit /bin/entrykit \
+  && chmod +x /bin/entrykit \
+  && entrykit --symlink
+
 COPY --from=build /site/public /usr/share/nginx/html
-COPY ./nginx/blog.conf.tmpl /etc/nginx/conf.d/default.conf
-COPY ./nginx/nginx.conf.tmpl /etc/nginx/nginx.conf
+COPY ./nginx/blog.conf.tmpl /etc/nginx/conf.d/default.conf.tmpl
+COPY ./nginx/nginx.conf.tmpl /etc/nginx/nginx.conf.tmpl
+
+ENTRYPOINT [ \
+  "render", "/etc/nginx/conf.d/default.conf", "--", \
+  "render", "/etc/nginx/nginx.conf", "--" \
+  ]
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,10 +1,12 @@
 server {
     listen       8080;
 
+    {{ if var "DEBUG" }}
     # redirect http to https
     if ($http_x_forwarded_proto = "http") {
         rewrite  ^/(.*)$  https://$host/$1 redirect;
     }
+    {{ end }}
 
     location / {
         root   /usr/share/nginx/html;
