@@ -112,7 +112,7 @@ scrape_configs:
 # scrape availability monitoring
 - job_name: 'blackbox'
   metrics_path: /probe
-  scrape_interval: 1s
+  scrape_interval: 10s
   params:
     module: [http_2xx]  # Look for a HTTP 200 response.
   static_configs:

@@ -122,7 +122,7 @@ spec:
         - mountPath: /etc/alertmanager/alertmanager.yml
           subPath: alertmanager.yml
           name: alertmanager-yml
-      - image: prom/prometheus:latest
+      - image: prom/prometheus:v2.3.2
         imagePullPolicy: Always
         name: prometheus
         readinessProbe:
@@ -150,7 +150,7 @@ spec:
           runAsUser: 0
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-      - image: grafana/grafana:latest
+      - image: grafana/grafana:5.2.0
         imagePullPolicy: Always
         name: grafana
         readinessProbe:
