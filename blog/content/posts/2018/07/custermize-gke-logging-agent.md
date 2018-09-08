@@ -3,7 +3,6 @@ date = "2018-07-15T14:00:00+09:00"
 title = "Custermize node logging agent on GKE"
 tags = ["k8s", "kubernates", "GKE", "logging"]
 categories = ["programming"]
-draft = "true"
 +++
 
 ## stackdriver -> gcs, bqすればよいのでは？

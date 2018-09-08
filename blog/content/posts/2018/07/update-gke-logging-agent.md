@@ -3,7 +3,6 @@ date = "2018-07-28T11:00:00+09:00"
 title = "Update GKE fluentd version"
 tags = ["k8s", "kubernates", "GKE", "logging", "fluentd"]
 categories = ["programming"]
-draft = "true"
 +++
 
 GKE上のnode logging aggregator fluentdのversionup
