@@ -41,6 +41,53 @@ jobs:
             # modify blog image tag to rolling update
             kubectl set image deployment blog blog=threetreeslight/blog:$CIRCLE_SHA1
 
+  issue-and-update-certificate:
+    docker:
+      - image: google/cloud-sdk:latest
+    environment:
+      GOOGLE_PROJECT_ID: "threetreeslight"
+      GOOGLE_COMPUTE_ZONE: "us-west1-a"
+    steps:
+      - run:
+          name: Issue certificate
+          command: |
+            docker pull certbot/dns-route53
+
+            docker run -it --rm \
+            -v $PWD/certificate/etc:/etc/letsencrypt -v $PWD/certificate/lib:/var/lib/letsencrypt -v $PWD/certificate/log:/var/log/letsencrypt \
+            -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+            certbot/dns-route53 certonly \
+            -n --agree-tos --email $EMAIL \
+            --server https://acme-v02.api.letsencrypt.org/directory \
+            -d threetreeslight.com -d "*.threetreeslight.com"
+      - run:
+          name: Store Service Account
+          command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+      - run:
+          name: Register and Update SSL Certificate
+          command: |
+            # auth and setup gcp
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+
+            # regsiter new certificate
+            CERT_NAME=threetreeslight-com-$(date +%Y-%m-%d-%H:%M:%S)
+            gcloud compute ssl-certificates create $CERT_NAME \
+            --certificate $PWD/certificate/etc/live/threetreeslight.com/fullchain.pem \
+            --private-key $PWD/certificate/etc/live/threetreeslight.com/privkey.pem
+
+            gcloud compute ssl-certificates list 
+
+            # Update ingress certificate
+            sed -i "" -e "s/pre-shared-cert:.*/pre-shared-cert: $CERT_NAME/" ./kubernates/ingress.yaml
+            kubectl apply -f ./kubernates/ingress.yaml
+
+            # commit update diff
+            git add ./kubernates/ingress.yaml
+            git checkout -b update-certificate
+            git push origin update-certificate
+
 workflows:
   version: 2
   build-and-deploy:
@@ -52,3 +99,14 @@ workflows:
           filters:
             branches:
               only: master
+
+  update-certificate:
+    triggers:
+      - schedule:
+          cron: "0 0 10 2,4,6,8,10,12 *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - issue-and-update-certificate

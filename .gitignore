@@ -17,3 +17,4 @@
 /blog/public
 
 config_secret.toml
+certificate
