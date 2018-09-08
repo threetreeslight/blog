@@ -82,6 +82,15 @@ services:
     ports:
       - 9100:9100
 
+  fluentd-gcp:
+    build:
+      context: ./fluentd-gcp
+      dockerfile: Dockerfile
+    volumes:
+      - ./fluentd-gcp/config:/etc/fluent/config.d
+    ports:
+      - 24224:24224
+
 volumes:
   prometheus-data:
     driver: local
