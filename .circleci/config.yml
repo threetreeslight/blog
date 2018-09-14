@@ -84,8 +84,8 @@ jobs:
             kubectl apply -f ./kubernates/ingress.yaml
 
             # commit update diff
-            git add ./kubernates/ingress.yaml
             git checkout -b update-certificate
+            git add ./kubernates/ingress.yaml
             git push origin update-certificate
 
 workflows:
