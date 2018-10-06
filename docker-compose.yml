@@ -6,7 +6,7 @@ services:
       - ./blog:/site
     ports:
       - 1313:1313
-    command: ["hugo", "server", "-D", "--baseURL=http://${DOCKER_HOST_IP}:1313", "--bind=0.0.0.0"]
+    command: ["hugo", "server", "-D", "--bind=0.0.0.0"]
 
   nginx:
     build:

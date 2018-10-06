@@ -28,7 +28,7 @@ service A,B が存在し、それが通信してやりとりする分散シス�
 
 サービス間はメッセージをやりとりするための、通信のスタックがあり、その通信スタックを経由してservice間の通信を行う
 
-![](http://philcalcado.com/img/service-mesh/4.png)
+![](/images/blog/2018/09/2018-09-22-service-mesh-01.png)
 
 これで良くない？と思うかもしれないが、分散システムには気をつけなければならないことはとても多い。
 
@@ -96,7 +96,7 @@ APIの標準化とか、マイクロサービスにおける認証認可の問�
 1. service discovery
 1. circuit breakers
 
-![](http://philcalcado.com/img/service-mesh/5.png)
+![](/images/blog/2018/09/2018-09-22-service-mesh-02.png)
 
 ### Service Discovery
 
@@ -131,14 +131,14 @@ APIの標準化とか、マイクロサービスにおける認証認可の問�
 
 この問題を解決するために、いかのようにcircuit brakers patternを用いて無駄なrequestを送らないようにします。
 
-![](https://martinfowler.com/bliki/images/circuitBreaker/sketch.png)
+![](/images/blog/2018/09/2018-09-22-service-mesh-03.png)
 
 ### 共通する課題
 
 1. 開発者はservice discoveryを意識し、どのように通信元のサービスにその情報を通知するのか考えなければいけない
 1. circit brakersは有効だが、同じようなコードを忘れず、書き続ける必要がある
 
-![](http://philcalcado.com/img/service-mesh/6.png)
+![](/images/blog/2018/09/2018-09-22-service-mesh-04.png)
 
 しかし、責務は分離されたものの、実装は開発者に任されるのは望ましくありません。
 
@@ -153,7 +153,7 @@ APIの標準化とか、マイクロサービスにおける認証認可の問�
 
 この問題を解決するために、service discoveryとcircit braker機能をもった通信をproxyするsidecarアプローチが取られるようになりました。
 
-![](http://philcalcado.com/img/service-mesh/6-a.png)
+![](/images/blog/2018/09/2018-09-22-service-mesh-05.png)
 
 - Buoyant’s CEO William Morganによって2017年 service meshという言葉爆誕
 - だったら、deployされたら勝手に追加すれば良くないか？というのがservice meshの考え方
