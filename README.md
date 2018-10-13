@@ -2,7 +2,24 @@
 
 [![CircleCI](https://circleci.com/gh/threetreeslight/blog/tree/master.svg?style=svg)](https://circleci.com/gh/threetreeslight/blog/tree/master)
 
+## TODO
+
+- [ ] Apply kubernates yamls automatically by `kubectl apply -f ./kubernates --prune` on circleci, when yaml has changed
+- [ ] Apply kubernates secret automatically
+
+## Archtecture Overview
+
+![](/doc/architecture.png)
+https://drive.google.com/file/d/1cD5BMx5KF-GnfHX4Rya_XkNtKMQQiY6c/view?usp=sharing
+
 ## Getting started on local
+
+```
+gcloud auth login
+gcloud config set project threetreeslight
+gcloud config set compute/zone us-west1-a
+gcloud container clusters get-credentials blog-cluster
+```
 
 ```
 # To work enable assets link via docker
@@ -68,4 +85,13 @@ kubectl logs -f deployment/monitor blackbox-exporter
 kubectl logs -f deployment/monitor alertmaanger
 kubectl logs -f deployment/monitor prometheus
 kubectl logs -f deployment/monitor grafana
+```
+## Deploy secret
+
+```sh
+# encrypt
+kubesec encrypt -i --key projects/threetreeslight/locations/global/keyRings/blog/cryptoKeys/monitor ./kubernates/secret.yaml
+
+# decrypt and apply
+kubesec decrypt ./kubernates/secret.yaml | kubectl apply -f -
 ```
