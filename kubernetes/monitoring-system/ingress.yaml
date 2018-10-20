@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lb
+  namespace: "monitoring-system"
+  annotations:
+      kubernetes.io/ingress.global-static-ip-name: "blog-monitoring-system"
+      kubernetes.io/ingress.allow-http: "false"
+      ingress.gcp.kubernetes.io/pre-shared-cert: "threetreeslight-com-2018-09-08"
+spec:
+  rules:
+  - host: "grafana.threetreeslight.com"
+    http:
+      paths:
+      - backend:
+          serviceName: monitor
+          servicePort: 3000

@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lb
+  namespace: app
+  annotations:
+      kubernetes.io/ingress.global-static-ip-name: "blog-gke"
+      kubernetes.io/ingress.allow-http: "true"
+      ingress.gcp.kubernetes.io/pre-shared-cert: "threetreeslight-com-2018-09-08"
+spec:
+  rules:
+  - host: "threetreeslight.com"
+    http:
+      paths:
+      - backend:
+          serviceName: blog
+          servicePort: 8080

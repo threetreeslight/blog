@@ -1,51 +1,10 @@
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: monitor
-rules:
-- apiGroups: [""]
-  resources:
-  - nodes
-  - nodes/proxy
-  - services
-  - endpoints
-  - pods
-  - configmaps
-  verbs: ["get", "list", "watch"]
-- apiGroups:
-  - extensions
-  resources:
-  - ingresses
-  verbs: ["get", "list", "watch"]
-- nonResourceURLs: ["/metrics"]
-  verbs: ["get"]
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: monitor
-  namespace: default
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: monitor
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: monitor
-subjects:
-- kind: ServiceAccount
-  name: monitor
-  namespace: default
----
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: monitor
   name: monitor
-  namespace: default
+  namespace: "monitoring-system"
 spec:
   ports:
   - port: 9090
@@ -92,7 +51,7 @@ metadata:
   labels:
     app: monitor
   name: monitor
-  namespace: default
+  namespace: "monitoring-system"
 spec:
   replicas: 1
   selector:
@@ -165,8 +124,8 @@ spec:
         - name: GF_SECURITY_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: gf-security-admin-password
-              key: password
+              name: monitor-secret
+              key: gf-security-admin-password
         ports:
         - containerPort: 3000
           protocol: TCP
