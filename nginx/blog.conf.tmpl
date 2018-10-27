@@ -2,11 +2,30 @@ server {
     listen       8080;
 
     {{ if var "DEBUG" }}
+    {{ else }}
     # redirect http to https
     if ($http_x_forwarded_proto = "http") {
         rewrite  ^/(.*)$  https://$host/$1 redirect;
     }
     {{ end }}
+
+    location /healthy {
+        default_type text/plain;
+        return 200 'ok';
+    }
+
+    # For nginx-prometheus-exporter
+    # https://github.com/nginxinc/nginx-prometheus-exporter
+    location /stub_status {
+        stub_status on;
+        access_log off;
+        {{ if var "DEBUG" }}
+        {{ else }}
+        # Allow access from same pod
+        allow 127.0.0.1;
+        deny all;
+        {{ end }}
+    }
 
     location / {
         root   /usr/share/nginx/html;

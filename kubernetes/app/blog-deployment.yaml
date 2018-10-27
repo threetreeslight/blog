@@ -44,11 +44,12 @@ spec:
         name: blog
         readinessProbe:
           httpGet:
-            path: /
+            path: /healthy
             port: 8080
-          periodSeconds: 2
+          periodSeconds: 10
+          timeoutSeconds: 1
           initialDelaySeconds: 0
-          failureThreshold: 5
+          failureThreshold: 6
           successThreshold: 1
         ports:
         - containerPort: 8080

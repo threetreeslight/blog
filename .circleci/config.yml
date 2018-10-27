@@ -39,7 +39,7 @@ jobs:
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
 
             # modify blog image tag to rolling update
-            kubectl set image deployment blog blog=threetreeslight/blog:$CIRCLE_SHA1 --namespace app
+            kubectl set image deployment blog blog=threetreeslight/blog:$CIRCLE_SHA1 --namespace app --record
 
 workflows:
   version: 2

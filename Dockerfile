@@ -35,12 +35,11 @@ RUN apk add --no-cache --virtual build-dependencies curl tar \
   && entrykit --symlink
 
 COPY --from=build /site/public /usr/share/nginx/html
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/blog.conf.tmpl /etc/nginx/conf.d/default.conf.tmpl
-COPY ./nginx/nginx.conf.tmpl /etc/nginx/nginx.conf.tmpl
 
 ENTRYPOINT [ \
-  "render", "/etc/nginx/conf.d/default.conf", "--", \
-  "render", "/etc/nginx/nginx.conf", "--" \
+  "render", "/etc/nginx/conf.d/default.conf", "--" \
   ]
 
 CMD ["nginx", "-g", "daemon off;"]
