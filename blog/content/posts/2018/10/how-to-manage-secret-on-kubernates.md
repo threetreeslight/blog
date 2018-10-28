@@ -22,7 +22,7 @@ Google KMSで暗号化し、secretの更新ができるか早速利用してみ�
 仮に `passwrod: password` というkey-valueを暗号化するとする
 
 ```bash
-% echo 'password' | base64
+% echo -n 'password' | base64
 cGFzc3dvcmQK
 ```
 
