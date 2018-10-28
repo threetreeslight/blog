@@ -16,5 +16,5 @@
 # Hugo default output directory
 /blog/public
 
-config_secret.toml
-certificate
+# Environment
+.envrc

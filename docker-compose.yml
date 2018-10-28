@@ -18,11 +18,13 @@ services:
       - 8888:8080
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:5.2.0
     volumes:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - grafana-storage:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD}
     depends_on:
       - prometheus
     networks:
@@ -31,7 +33,7 @@ services:
       - 3000:3000
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.3.2
     volumes:
       - ./prometheus/prometheus-local.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
