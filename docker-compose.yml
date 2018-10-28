@@ -17,6 +17,14 @@ services:
     ports:
       - 8888:8080
 
+  nginx-prometheus-exporter:
+    image: nginx/nginx-prometheus-exporter:0.1.0
+    depends_on:
+      - nginx
+    ports:
+      - 9113:9113
+    command: "-nginx.scrape-uri http://nginx:8080/stub_status"
+
   grafana:
     image: grafana/grafana:5.2.0
     volumes:
