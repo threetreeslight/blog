@@ -89,6 +89,7 @@ spec:
             path: /graph
             port: 9090
           periodSeconds: 10
+          timeoutSeconds: 10
           initialDelaySeconds: 0
           failureThreshold: 10
           successThreshold: 1
@@ -117,6 +118,7 @@ spec:
             path: /login
             port: 3000
           periodSeconds: 10
+          timeoutSeconds: 10
           initialDelaySeconds: 0
           failureThreshold: 10
           successThreshold: 1
