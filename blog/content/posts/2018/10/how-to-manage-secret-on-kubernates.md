@@ -84,8 +84,7 @@ type: Opaque
 ```yaml
 apiVersion: v1
 data:
-  password: |
-    password
+  password: password
 kind: Secret
 metadata:
   name: sample
