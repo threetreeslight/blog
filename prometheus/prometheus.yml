@@ -109,6 +109,9 @@ scrape_configs:
     action: replace
     target_label: kubernetes_pod_name
 
+# ---------------------------------------------------------------------------
+# Deployed service
+# ---------------------------------------------------------------------------
 # scrape availability monitoring
 - job_name: 'blackbox'
   metrics_path: /probe
@@ -119,7 +122,7 @@ scrape_configs:
   static_configs:
     - targets:
       - https://threetreeslight.com/healthy
-      - https://grafana.threetreeslight.com/login
+      - https://grafana.threetreeslight.com/api/health
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target

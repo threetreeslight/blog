@@ -29,7 +29,16 @@ gcloud kms keys list --location global --keyring blog
 Create or Update monitoring-system resouces
 
 ```sh
-./scripts/restart_monitor.sh
+# Update config & restart deployment
+./bin/monitor apply_config
+# Apply kubernetes spec
+./bin/monitor apply_spec
+# Restart pod
+./bin/monitor restart
+# Stop pod
+./bin/monitor stop
+# start pod
+./bin/monitor start
 ```
 
 ## Usage
@@ -58,6 +67,13 @@ open http://localhost:9090
 kubectl port-forward $(kubectl get pod --selector="app=monitor" --namespace monitoring-system -o jsonpath='{.items[0].metadata.name}') 9093:9093
 logs
 open localhost:9093
+```
+
+Exec command in container
+
+```
+# in grafana
+kubectl exec -it $(kubectl get pod --selector="app=monitor" --namespace monitoring-system -o jsonpath='{.items[0].metadata.name}') --container grafana -- /bin/sh
 ```
 
 Show logs
