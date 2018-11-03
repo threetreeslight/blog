@@ -20,6 +20,100 @@ scrape_configs:
   static_configs:
   - targets: ['localhost:9090']
 
+# ------------------------------------------------------------------------
+# Istio Scriping
+# ------------------------------------------------------------------------
+- job_name: 'istio-mesh'
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names:
+      - istio-system
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    action: keep
+    regex: istio-telemetry;prometheus
+
+- job_name: 'envoy'
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
+  # metrics_path defaults to '/metrics'
+  # scheme defaults to 'http'.
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names:
+      - istio-system
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    action: keep
+    regex: istio-statsd-prom-bridge;statsd-prom
+
+- job_name: 'istio-policy'
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
+  # metrics_path defaults to '/metrics'
+  # scheme defaults to 'http'.
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names:
+      - istio-system
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    action: keep
+    regex: istio-policy;http-monitoring
+
+- job_name: 'istio-telemetry'
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
+  # metrics_path defaults to '/metrics'
+  # scheme defaults to 'http'.
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names:
+      - istio-system
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    action: keep
+    regex: istio-telemetry;http-monitoring
+
+- job_name: 'pilot'
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
+  # metrics_path defaults to '/metrics'
+  # scheme defaults to 'http'.
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names:
+      - istio-system
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    action: keep
+    regex: istio-pilot;http-monitoring
+
+- job_name: 'galley'
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
+  # metrics_path defaults to '/metrics'
+  # scheme defaults to 'http'.
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names:
+      - istio-system
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    action: keep
+    regex: istio-galley;http-monitoring
+
+# -----------------------------------------------------------------------
+# kubernetes
+# -----------------------------------------------------------------------
 # ref prometheus-kubernates example and service discovery
 # - https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus-kubernetes.yml
 # - https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Ckubernetes_sd_config%3E
@@ -28,27 +122,24 @@ scrape_configs:
 - job_name: 'kubernetes-apiservers'
   kubernetes_sd_configs:
     - role: endpoints
-
   scheme: https
   tls_config:
     ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 
   relabel_configs:
-  - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+  - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
     action: keep
-    regex: default;kubernetes;https
+    regex: kubernetes;https
 
 # Scrape config for nodes (kubelet).
 - job_name: 'kubernetes-nodes'
   kubernetes_sd_configs:
   - role: node
-
   scheme: https
   tls_config:
     ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-
   relabel_configs:
   - action: labelmap
     regex: __meta_kubernetes_node_label_(.+)
@@ -63,12 +154,10 @@ scrape_configs:
 - job_name: 'kubernetes-cadvisor'
   kubernetes_sd_configs:
   - role: node
-
   scheme: https
   tls_config:
     ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-
   relabel_configs:
   - action: labelmap
     regex: __meta_kubernetes_node_label_(.+)
@@ -83,8 +172,23 @@ scrape_configs:
 - job_name: 'kubernetes-service-endpoints'
   kubernetes_sd_configs:
   - role: endpoints
-
   relabel_configs:
+  - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+    action: keep
+    regex: true
+  - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+    action: replace
+    target_label: __scheme__
+    regex: (https?)
+  - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+    action: replace
+    target_label: __metrics_path__
+    regex: (.+)
+  - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+    action: replace
+    target_label: __address__
+    regex: ([^:]+)(?::\d+)?;(\d+)
+    replacement: $1:$2
   - action: labelmap
     regex: __meta_kubernetes_service_label_(.+)
   - source_labels: [__meta_kubernetes_namespace]
@@ -98,16 +202,27 @@ scrape_configs:
 - job_name: 'kubernetes-pods'
   kubernetes_sd_configs:
   - role: pod
-
   relabel_configs:
+  - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+    action: keep
+    regex: true
+  - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+    action: replace
+    target_label: __metrics_path__
+    regex: (.+)
+  - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+    action: replace
+    regex: ([^:]+)(?::\d+)?;(\d+)
+    replacement: $1:$2
+    target_label: __address__
   - action: labelmap
     regex: __meta_kubernetes_pod_label_(.+)
   - source_labels: [__meta_kubernetes_namespace]
     action: replace
-    target_label: kubernetes_namespace
+    target_label: namespace
   - source_labels: [__meta_kubernetes_pod_name]
     action: replace
-    target_label: kubernetes_pod_name
+    target_label: pod_name
 
 # ---------------------------------------------------------------------------
 # Deployed service
