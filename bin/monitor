@@ -1,0 +1,107 @@
+#!/usr/bin/env ruby
+
+require "open3"
+
+NAMESPACE = 'monitoring-system'
+
+def run_cmd(cmd)
+  puts("[info] #{cmd}")
+
+  output = nil
+  Open3.popen3(cmd) do |_, o, e, thr|
+    puts o.read
+    puts e.read
+    output = o.read
+  end
+
+  output
+end
+
+def create_or_update_configs
+  # Create/Update config-maps
+  {
+    'alertmanager-yml': 'prometheus/alertmanager.yml',
+    'prometheus-yml': 'prometheus/prometheus.yml',
+    'alert-rules-yml': 'prometheus/alert.rules.yml',
+    'grafana-ini': 'grafana/grafana.ini',
+    'grafana-datasource': 'grafana/datasource.yaml',
+  }.each do |k,v|
+    # is_exist = `kubectl get configmap --namespace monitoring-system`
+    is_exist = true
+
+    if is_exist
+      # update exists configmap
+      cmd = "kubectl create configmap #{k} --from-file=#{v} --namespace #{NAMESPACE} --dry-run -o yaml | kubectl replace configmap #{k} -f -"
+    else
+      # create new configmap
+      cmd = "kubectl create configmap #{k} --from-file=#{v} --namespace #{NAMESPACE}"
+    end
+
+    run_cmd(cmd)
+  end
+
+end
+
+def apply
+  # Apply namespace,rbac,ingress,deployment
+  yaml_path = 'kubernetes/monitoring-system'
+
+  %w(
+    namespace
+    rbac
+    ingress
+    pvc
+    service
+    deployment
+  ).each do |f|
+    run_cmd("kubectl apply -f #{yaml_path}/#{f}.yaml")
+  end
+
+  # Apply secrets
+  run_cmd("kubesec decrypt #{yaml_path}/secret.yaml | kubectl apply -f -")
+end
+
+def stop
+  # ------------------------------------------------
+  # Restart monitor-system containers
+  # ------------------------------------------------
+  # Stop containers
+  run_cmd("kubectl scale --replicas=0 deployment/monitor --namespace #{NAMESPACE}")
+
+  until run_cmd("kubectl get pods --namespace #{NAMESPACE} | grep monitor | wc -l").to_i == 0
+    sleep(1)
+  end
+
+  puts "successfully stopped"
+end
+
+def start
+  # Start containers
+  run_cmd("kubectl scale --replicas=1 deployment/monitor --namespace #{NAMESPACE}")
+  run_cmd("kubectl rollout status deployment/monitor --namespace #{NAMESPACE}")
+end
+
+def restart
+  stop
+  start
+end
+
+
+command = ARGV.first
+
+puts "[info] #{command}"
+
+case command
+when "apply_config"
+  create_or_update_configs
+  apply
+  restart
+when "apply_spec"
+  apply
+when "restart"
+  restart
+when "start"
+  start
+when "stop"
+  stop
+end
