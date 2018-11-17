@@ -5,9 +5,9 @@ metadata:
     app: blog
   name: blog
   namespace: app
-  # annotations:
-  #   # https://github.com/istio/istio/issues/2628#issuecomment-358145100
-  #   auth.istio.io/8080: NONE
+  annotations:
+    # https://github.com/istio/istio/issues/2628#issuecomment-358145100
+    auth.istio.io/8081: NONE
 spec:
   replicas: 1
   selector:
@@ -31,21 +31,20 @@ spec:
         imagePullPolicy: Always
         name: blog
         readinessProbe:
-          exec:
-            command:
-            - curl
-            - -f
-            - http://localhost:8080/healthy
-          # httpGet:
-          #   path: /healthy
-          #   port: 8080
+          httpGet:
+            path: /healthy
+            port: 8081
           periodSeconds: 10
           timeoutSeconds: 1
           initialDelaySeconds: 0
           failureThreshold: 6
           successThreshold: 1
         ports:
+        # Use for regular access
         - containerPort: 8080
+          protocol: TCP
+        # Use for healthcheck
+        - containerPort: 8081
           protocol: TCP
         resources:
           requests:

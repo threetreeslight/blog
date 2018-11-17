@@ -1,5 +1,16 @@
 server {
-    listen       8080;
+    listen 8081;
+
+    # use for kubelet readinessProbe
+    # https://istio.io/help/faq/security/#k8s-health-checks
+    location /healthy {
+        default_type text/plain;
+        return 200 'ok';
+    }
+}
+
+server {
+    listen 8080;
 
     {{ if var "DEBUG" }}
     {{ else }}
@@ -8,11 +19,6 @@ server {
         rewrite  ^/(.*)$  https://$host/$1 redirect;
     }
     {{ end }}
-
-    location /healthy {
-        default_type text/plain;
-        return 200 'ok';
-    }
 
     # For nginx-prometheus-exporter
     # https://github.com/nginxinc/nginx-prometheus-exporter
@@ -25,6 +31,12 @@ server {
         allow 127.0.0.1;
         deny all;
         {{ end }}
+    }
+
+    # for availability monitoring
+    location /healthy {
+        default_type text/plain;
+        return 200 'ok';
     }
 
     location / {
