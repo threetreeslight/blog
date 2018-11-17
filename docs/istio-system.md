@@ -14,6 +14,8 @@ Download Istio and prepare
 Install Istio to cluster with disable prometheus
 
 ```sh
-helm install install/kubernetes/helm/istio --name istio --namespace istio-system \
+helm install install/kubernetes/helm/istio \
+--name istio \
+--namespace istio-system \
 --set prometheus.enabled=false
 ```

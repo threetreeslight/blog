@@ -18,4 +18,4 @@ https://drive.google.com/file/d/1cD5BMx5KF-GnfHX4Rya_XkNtKMQQiY6c/view?usp=shari
 - [Getting Started for app](docs/getting-started-for-app.md)
 - [Getting Started for Infra](docs/getting-started-for-infra.md)
   - [monitoring-system](docs/monitoring-system.md)
-  - [monitoring-system](docs/istio-system.md)
+  - [istio-system](docs/istio-system.md)
