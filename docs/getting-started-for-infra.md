@@ -1,11 +1,8 @@
 # Getting Started for Infra
 
-Requreiment
-
-- Install gcloud client
-- Create GKE Cluster
-
 Setup gcloud client and install kubectl
+
+- https://cloud.google.com/sdk/docs/quickstarts
 
 ```sh
 # Authentication
@@ -43,7 +40,7 @@ Set credential
 gcloud container clusters get-credentials blog-cluster
 ```
 
-Install helem and initialize
+Install [Helm](https://docs.helm.sh/using_helm/) and initialize
 
 ```sh
 # Create serviceaccount for helm
@@ -51,7 +48,7 @@ kubectl apply -f kubernetes/helm.yaml
 # Install
 brew install helm
 # Install tiller pod to target cluster
-helm init
+helm init --service-account tiller
 ```
 
 Install kubesec
@@ -63,7 +60,7 @@ brew install shyiko/kubesec/kubesec
 (Option) Install useful tools
 
 ```sh
-brew install kubectx
+brew install kubectx stern
 ```
 
 # On local

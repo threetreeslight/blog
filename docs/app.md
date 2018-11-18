@@ -1,21 +1,6 @@
-# Getting Started for App
+# App Infrastructure
 
-## App
-
-Run hugo server
-
-```sh
-docker-compose up site
-open http://localhost:1313
-```
-
-## Infrastructure
-
-Requirement
-
-- Already exists GKE cluster
-- Install kubectl,helm and setup
-- (options) Install kubectx, kubens
+## Getting Started
 
 If you haven't create blog-monitoring-system, run follow
 
@@ -28,7 +13,7 @@ Apply
 
 - Should `--dry-run` and `--validate` option, before apply.
 
-```
+```sh
 kubectl apply -f kubernetes/app/*
 ```
 
@@ -36,7 +21,7 @@ kubectl apply -f kubernetes/app/*
 
 Manually update blog container
 
-```
+```sh
 docker build -t threetreeslight/blog:latest .
 docker push threetreeslight/blog:latest
 ```

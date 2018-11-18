@@ -6,7 +6,7 @@ Requirement
 
 - Already exists GKE cluster
 - Install kubectl, helm and setup
-- (options) Install kubectx, kubens
+- (options) Install kubectx, kubens, stern
 
 If you haven't create blog-monitoring-system, run follow
 
