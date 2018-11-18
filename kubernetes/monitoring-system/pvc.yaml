@@ -4,6 +4,7 @@ metadata:
   name: prometheus-data
   labels:
     app: monitor
+  namespace: "monitoring-system"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -17,6 +18,7 @@ metadata:
   name: grafana-data
   labels:
     app: monitor
+  namespace: "monitoring-system"
 spec:
   accessModes:
     - ReadWriteOnce
