@@ -6,11 +6,11 @@ metadata:
   name: blog
   namespace: app
 spec:
+  type: NodePort
+  selector:
+    app: blog
   ports:
   - port: 8080
     protocol: TCP
     name: blog
     targetPort: 8080
-  selector:
-    app: blog
-  type: NodePort
