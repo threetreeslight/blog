@@ -79,6 +79,10 @@ kubectl exec -it $(kubectl get pod --selector="app=monitor" --namespace monitori
 Show logs
 
 ```sh
+# Use starn
+stern "*" -n monitoring-system --tail 1
+
+# Use kubectl logs
 kubectl logs -f deployment/monitor blackbox-exporter --monitoring-system
 kubectl logs -f deployment/monitor alertmaanger
 kubectl logs -f deployment/monitor prometheus

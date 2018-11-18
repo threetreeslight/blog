@@ -29,7 +29,20 @@ Apply
 - Should `--dry-run` and `--validate` option, before apply.
 
 ```
-kubectl apply -f kubernetes/app/namespace.yaml
-kubectl apply -f kubernetes/app/blog-deployment.yaml
-kubectl apply -f kubernetes/app/ingress.yaml
+kubectl apply -f kubernetes/app/*
+```
+
+## Other Usage
+
+Manually update blog container
+
+```
+docker build -t threetreeslight/blog:latest .
+docker push threetreeslight/blog:latest
+```
+
+Show logs
+
+```sh
+stern "*" -n app --tail 1
 ```
