@@ -29,5 +29,8 @@ docker push threetreeslight/blog:latest
 Show logs
 
 ```sh
-stern "*" -n app --tail 1
+# show all container log on app namespace
+stern "" -n app --tail 1
+# show all container logs
+stern "" --all-namespaces tail 1
 ```
