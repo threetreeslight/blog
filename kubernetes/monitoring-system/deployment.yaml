@@ -22,11 +22,11 @@ spec:
     spec:
       serviceAccountName: monitor
       containers:
-      - image: prom/blackbox-exporter:latest
+      - image: prom/blackbox-exporter:v0.13.0
         imagePullPolicy: Always
         name: blackbox-exporter
         resources: {}
-      - image: prom/alertmanager:latest
+      - image: prom/alertmanager:v0.15.3
         imagePullPolicy: Always
         name: alertmanager
         ports:
@@ -37,7 +37,7 @@ spec:
         - mountPath: /etc/alertmanager/alertmanager.yml
           subPath: alertmanager.yml
           name: alertmanager-yml
-      - image: prom/prometheus:v2.3.2
+      - image: prom/prometheus:v2.6.0
         imagePullPolicy: Always
         name: prometheus
         livenessProbe:

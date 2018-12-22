@@ -42,7 +42,7 @@ services:
       - 3000:3000
 
   prometheus:
-    image: prom/prometheus:v2.3.2
+    image: prom/prometheus:v2.6.0
     volumes:
       - ./prometheus/prometheus-local.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
@@ -58,14 +58,14 @@ services:
       - 9090:9090
 
   alertmanager:
-    image: prom/alertmanager
+    image: prom/alertmanager:v0.15.3
     volumes:
       - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
       - 9093:9093
 
   blackbox-exporter:
-    image: prom/blackbox-exporter:latest
+    image: prom/blackbox-exporter:v0.13.0
     networks:
       - default
     ports:
