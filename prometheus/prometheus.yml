@@ -2,10 +2,6 @@ global:
   scrape_interval:     15s
   evaluation_interval: 15s
 
-  # Attach these extra labels to all timeseries collected by this Prometheus instance.
-  external_labels:
-    monitor: 'codelab-monitor'
-
 alerting:
   alertmanagers:
   - static_configs:

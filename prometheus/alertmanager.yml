@@ -2,11 +2,11 @@ global:
   slack_api_url: https://hooks.slack.com/services/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
 
 route:
-  group_by: ['alertname', 'cluster']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 10s
   receiver: slack
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  group_by: ['cluster','alertname','instance']
 
 receivers:
 - name: slack
@@ -15,7 +15,7 @@ receivers:
     channel: '#blog'
     color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
     footer: '{{ template "slack.default.footer" . }}'
-    icon_url: 'https://pbs.twimg.com/profile_images/588945677599780865/mrhc1gSh_400x400.png'
+    icon_url: 'https://github.com/cncf/artwork/blob/master/prometheus/icon/color/prometheus-icon-color.png?raw=true'
     pretext: '{{ template "slack.default.pretext" . }}'
     short_fields: false
     title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }} {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
