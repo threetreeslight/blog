@@ -6,7 +6,7 @@ metadata:
   annotations:
       kubernetes.io/ingress.global-static-ip-name: "blog-gke"
       kubernetes.io/ingress.allow-http: "true"
-      ingress.gcp.kubernetes.io/pre-shared-cert: "threetreeslight-2018-12-07"
+      ingress.gcp.kubernetes.io/pre-shared-cert: "threetreeslight-com-2018-12-22"
 spec:
   rules:
   - host: "threetreeslight.com"
