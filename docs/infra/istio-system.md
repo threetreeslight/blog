@@ -17,5 +17,11 @@ Install Istio to cluster with disable prometheus
 helm install install/kubernetes/helm/istio \
 --name istio \
 --namespace istio-system \
---set prometheus.enabled=false
+--set certmanager.enabled=false \
+--set grafana.enabled=false \
+--set grallary.enabled=false \
+--set kaili.enabled=false \
+--set prometheus.enabled=false \
+--set tracing.enabled=false \
+--set servicegraph.enabled=false
 ```
