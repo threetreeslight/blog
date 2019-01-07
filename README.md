@@ -35,3 +35,10 @@ open http://localhost:1313
 - blog-clusterr
   - [workload](https://console.cloud.google.com/kubernetes/workload?authuser=0&project=threetreeslight&workload_list_tablesize=50&workload_list_tablequery=%255B%257B_22k_22_3A_22is_system_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22false_5C_22_22_2C_22s_22_3Atrue%257D_2C%257B_22k_22_3A_22metadata%252FclusterReference%252Fname_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22blog-cluster_5C_22_22_2C_22s_22_3Atrue%257D%255D)
   - [service](https://console.cloud.google.com/kubernetes/discovery?authuser=0&project=threetreeslight&service_list_tablesize=50&service_list_tablequery=%255B%257B_22k_22_3A_22is_system_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22false_5C_22_22_2C_22s_22_3Atrue%257D_2C%257B_22k_22_3A_22metadata%252FclusterReference%252Fname_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22blog-cluster_5C_22_22%257D%255D)
+
+## Other usage
+
+```console
+$ gcloud auth list
+$ kubectl config current-context
+```
