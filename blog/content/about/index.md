@@ -5,10 +5,11 @@ title = "about"
 
 # Info
 
-- [github](https://github.com/threetreeslight)
-- [twitter](https://twitter.com/threetreeslight)
-- [Qiita](https://qiita.com/ThreeTreesLight)
+- [Blog](https://threetreeslight.com/)
+- [Github](https://github.com/threetreeslight)
 - [LTs](https://github.com/threetreeslight/slides)
+- [Qiita](https://qiita.com/ThreeTreesLight)
+- [twitter](https://twitter.com/threetreeslight)
 
 # Speaker
 
