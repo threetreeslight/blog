@@ -28,8 +28,9 @@ ReproのVP of Engineeringとして、グローバル進出を見据えイケて�
 
 - [Blog](https://threetreeslight.com/)
 - [Github](https://github.com/threetreeslight)
-- [LTs](https://github.com/threetreeslight/slides)
+- [linkedin](https://www.linkedin.com/in/akiramiki/)
 - [Qiita](https://qiita.com/threetreesLight)
+- [Slides](https://github.com/threetreeslight/slides)
 - [twitter](https://twitter.com/threetreeslight)
 
 # Video and Audio
@@ -50,12 +51,14 @@ ReproのVP of Engineeringとして、グローバル進出を見据えイケて�
 
 # Media
 
-- [CTO・開発責任者たちが語る「エンジニア採用で明日から使える秘技」](https://hcm-jinjer.com/media/contents/b-contents-5495/)
-- [技術者にも「顧客の声」との接点を！　サービスのあるべき姿を導くチャット活用法](https://seleck.cc/227)
-- [Repro[リプロ]株式会社CTO 三木様インタビュー](https://www.codeal.work/contents/archives/408)
-- [【日本のCTO vol.3】Repro株式会社 三木明氏 「失敗は決して悪ではない。大切なのは繰り返さないこと」＜後編＞](http://techlife.itpropartners.com/archives/655)
-- [【日本のCTO vol.3】Repro株式会社 三木明氏 「失敗は決して悪ではない。大切なのは繰り返さないこと」＜前編＞](http://techlife.itpropartners.com/archives/649)
-- [日本発信のグローバルITサービスを実現するーRepro株式会社](https://prosheet.jp/blog/columns/6731/)
+- [findy Engineer Lab - エンジニアがマーケティングを学ぶ時代!? Engineer Next Lab#1を開催レポート](https://findy-code.io/engineer-lab/engineer-next-lab-marketing)
+- [HR NOTE - CTO・開発責任者たちが語る「エンジニア採用で明日から使える秘技」](https://hcm-jinjer.com/media/contents/b-contents-5495/)
+- [CAREER HACK - CTO・技術責任者が語る！ スタートアップが実践する、エンジニア採用で使える秘技とは？](https://careerhack.en-japan.com/report/detail/811)
+- [seleck - 技術者にも「顧客の声」との接点を！　サービスのあるべき姿を導くチャット活用法](https://seleck.cc/227)
+- [CODEAL - Repro[リプロ]株式会社CTO 三木様インタビュー](https://www.codeal.work/contents/archives/408)
+- [TECH LIFE - 【日本のCTO vol.3】Repro株式会社 三木明氏 「失敗は決して悪ではない。大切なのは繰り返さないこと」＜後編＞](http://techlife.itpropartners.com/archives/655)
+- [TECH LIFE - 【日本のCTO vol.3】Repro株式会社 三木明氏 「失敗は決して悪ではない。大切なのは繰り返さないこと」＜前編＞](http://techlife.itpropartners.com/archives/649)
+- [PROSHEET - 日本発信のグローバルITサービスを実現するーRepro株式会社](https://prosheet.jp/blog/columns/6731/)
 
 # Communities
 
@@ -85,28 +88,23 @@ ReproのVP of Engineeringとして、グローバル進出を見据えイケて�
 ### Repro Tech Meetup / Founder & Organizer
 
 
-
-# Works
+# Products
 
 ### repro.io
 
-Co-Founder / CTO -> VP of Engineering
+co-founder. CTO -> VP of Engineering
 
 stack: https://stackshare.io/repro/repro
 
 ### TweetGoGo
 
-Founder / CTO
+co-founder. CTO
 
-system stack: ruby,rails
-
-<iframe width="420" height="315" src="//www.youtube.com/embed/CiKX3iY64ic" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/CiKX3iY64ic" frameborder="0" allowfullscreen></iframe>
 
 ### mashroom.fm
 
 CTO
-
-stack: ruby,rails,red5,aws
 
 <iframe width="560" height="315" src="//www.youtube.com/embed/G-CoK9rjVso" frameborder="0" allowfullscreen></iframe>
 <iframe width="560" height="315" src="//www.youtube.com/embed/6Ql7t-t058k" frameborder="0" allowfullscreen></iframe>
