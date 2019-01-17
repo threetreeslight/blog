@@ -3,25 +3,50 @@ date = "2018-04-30T18:11:00+09:00"
 title = "about"
 +++
 
+Reproの共同創業者兼VP of Engineering
+
+いくつかTechやHRのコミュニティやってます。
+
+Startup, 技術, マネジメント, 採用に強い興味を持つので気軽に話しましょう :)
+
+---
+
+Repro co-founder and VP of engineering.
+Organize several Tech and HR communities.
+
+Feel free to talk about startup, management and recruitment :)
+
+# Bio
+
+音楽系、メディア系スタートアップの立ち上げや、国内EC、越境EC企業でのエンジニアマネージャーを経て、モバイルアプリ・ウェブ向けのマーケティングオートメーションサービスを提供するReproを共同創業者。
+
+ReproのVP of Engineeringとして、グローバル進出を見据えイケてる会社にするため日々努力。
+
+最近は人事部長やイベントオーガナイザーおじさんと揶揄されるイジれるオジサン。
+
 # Info
 
 - [Blog](https://threetreeslight.com/)
 - [Github](https://github.com/threetreeslight)
 - [LTs](https://github.com/threetreeslight/slides)
-- [Qiita](https://qiita.com/ThreeTreesLight)
+- [Qiita](https://qiita.com/threetreesLight)
 - [twitter](https://twitter.com/threetreeslight)
 
-# Speaker
+# Video and Audio
 
 ### [Rails dm Day 4: B-13] スタートアップを通して学んだ最初からやっておけばよかったこと
 
-Rails Developers Meetup on railsdm 2018 Day 4
+[Rails Developers Meetup on railsdm 2018 Day 4](https://techplay.jp/event/702297)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/I1_wibf0xD8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-### [sp.49a【ゲスト: threetreeslight】SIerを飛び出したRepro VPoEと考える、楽しいスタートアップの歩き方](https://shiganai.org/ep/sp49a-threetreeslight)
+### [しがないラジオ - sp.49b【ゲスト: threetreeslight】本気で仕事するとこんなに楽しい！Repro創業期の日常あれこれ](https://shiganai.org/ep/sp49b-threetreeslight)
 
-<iframe width="100%" height="150" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F554642877&amp;show_artwork=true&amp;auto_play=false&amp;maxheight=150"></iframe>
+<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/556614102&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+
+### [しがないラジオ - sp.49a【ゲスト: threetreeslight】SIerを飛び出したRepro VPoEと考える、楽しいスタートアップの歩き方](https://shiganai.org/ep/sp49a-threetreeslight)
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/554642877&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
 
 # Media
 
@@ -34,34 +59,32 @@ Rails Developers Meetup on railsdm 2018 Day 4
 
 # Communities
 
-### [Shinjuku.rb](https://github.com/shinjukurb) / Organizer
+### [Shinjuku.rb](https://github.com/shinjukurb/meetups) / Organizer
 
 ![](/images/shinjukurb.png)
-
-- [connpass](https://shinjukurb.connpass.com/)
-- [doorkeeper](https://shinjukurb.doorkeeper.jp/)
 
 ### [Haskell Dojo](https://github.com/shinjukuhs/events) / Founder
 
 ![](/images/haskelldojo-banner-event.png)
 
-- [connpass](https://shinjukuhs.connpass.com/)
-
 ### [shinjuku.aar](https://github.com/shinjukuaar/shinjukuaar) / Founder & Organizer
 
 ![](/images/shinjukuaar-banner.png)
-
-- [connpass](https://shinjukuaar.connpass.com/)
 
 ### [The Arts of Mokumoku Programming](https://github.com/shinjuku-mokumoku/shinjuku-mokumoku) / Founder & Organizer
 
 ![](/images/shinjuku-mokumoku-banner.png)
 
-- [connpass](https://shinjuku-moku.connpass.com/)
+### [Hacking HR!](https://github.com/hacking-hr/hacking-hr) / Organizer
+
+![](/images/hacking-hr-banner.png)
+
 
 ### Repro Tech Hands-on / Founder & Organizer
 
 ### Repro Tech Meetup / Founder & Organizer
+
+
 
 # Works
 
