@@ -1,5 +1,4 @@
 +++
-date = "2018-04-30T18:11:00+09:00"
 title = "about"
 +++
 
@@ -8,8 +7,6 @@ Reproの共同創業者兼VP of Engineering
 いくつかTechやHRのコミュニティやってます。
 
 Startup, 技術, マネジメント, 採用に強い興味を持つので気軽に話しましょう :)
-
----
 
 Repro co-founder and VP of engineering.
 Organize several Tech and HR communities.
@@ -51,6 +48,10 @@ ReproのVP of Engineeringとして、グローバル進出を見据えイケて�
 
 # Media
 
+- logme - エンジニア採用パネルディスカッション――困難きわまる人材確保、だが成功する方針・施策とは
+  - [エンジニア採用における母集団の作り方, 社外に“メッセージ”を伝えるためにできること](https://logmi.jp/tech/articles/320822)
+  - [自社とのマッチングを見極めるために, 理想のエンジニア採用を実現するために大切なこと](https://logmi.jp/tech/articles/320823)
+- [IT人材ラボ - ITエンジニア採用成功の秘訣は自社が大事にしている価値感や“弱さ”をさらけ出すこと](https://itjinzai-lab.jp/article/detail/1512)
 - [findy Engineer Lab - エンジニアがマーケティングを学ぶ時代!? Engineer Next Lab#1を開催レポート](https://findy-code.io/engineer-lab/engineer-next-lab-marketing)
 - [HR NOTE - CTO・開発責任者たちが語る「エンジニア採用で明日から使える秘技」](https://hcm-jinjer.com/media/contents/b-contents-5495/)
 - [CAREER HACK - CTO・技術責任者が語る！ スタートアップが実践する、エンジニア採用で使える秘技とは？](https://careerhack.en-japan.com/report/detail/811)
